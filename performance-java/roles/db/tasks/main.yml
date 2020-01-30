@@ -1,0 +1,5 @@
+---
+  - include: swap-creating.yml
+  - include: oracle-install.yml
+  - include: oracle-init.yml
+  - include: oracle-setting.yml

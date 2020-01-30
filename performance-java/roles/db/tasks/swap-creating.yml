@@ -1,0 +1,54 @@
+---
+
+  - name: set filepath
+    set_fact:
+      swap_file_path: /swapfile
+
+  - name: exists swap file
+    stat: path={{ swap_file_path }}
+    register: swap_file
+
+  - name: swap off if exists
+    command: swapoff {{ swap_file_path }}
+    when: swap_file.stat.exists
+
+  - name: remove swapfile if exists
+    file:
+      path: "{{ swap_file_path }}"
+      state: absent
+    when: swap_file.stat.exists
+
+  - name: zero padding
+    command: dd if=/dev/zero of={{ swap_file_path }} bs=512M count=4
+
+
+  - name: make swap file
+    file:
+      path: '{{ swap_file_path }}'
+      mode: '0600'
+
+  - name: check file type
+    command: file {{ swap_file_path }}
+    register: swap_file_test
+
+  - name: mkswap
+    command: mkswap {{ swap_file_path }}
+    when: swap_file_test.stdout.find('swap file') == -1
+
+  - name: check swap
+    command: swapon -s
+    register: check_swap
+
+  - name: swap on
+    command: swapon {{ swap_file_path }}
+    when: check_swap.stdout == ''
+
+  - name: mount swap
+    mount:
+      name: swap
+      src: '{{ swap_file_path }}'
+      fstype: swap
+      opts: defaults
+      passno: '0'
+      dump: '0'
+      state: present

@@ -4,9 +4,9 @@ Tomcatにデプロイしたアプリの性能をみてみる場所
 
 ## 前準備
 
-* [ここ](https://www.oracle.com/technetwork/jp/database/database-technologies/express-edition/overview/index.html)からOracle 11g XEのRPMを入手してください。(zipファイルなので解凍してください)
+* [ここ](https://www.oracle.com/technetwork/jp/database/database-technologies/express-edition/overview/index.html)からOracle XE 11g のRPMを入手してください。(zipファイルなので解凍してください)
   * 「ダウンロード」タブ -> 画面下部「以前のリリース」
-  * `db/resource/oracle-xe-11.2.0-1.0.x86_64.rpm` となるように配置してください。
+  * `roles/db/files/rpm/oracle-xe-11.2.0-1.0.x86_64.rpm` となるように配置してください。
 * [ここ](https://repo.boundlessgeo.com/main/com/oracle/jdbc/ojdbc6/11.1.0.6.0/ojdbc6-11.1.0.6.0.jar)からJDBCドライバを入手してください。
 
 ## 環境構成
@@ -34,13 +34,20 @@ APサーバ(tomcat)とDBサーバ(Oracle 11g + JMeter)の２台
 * JavaはJava8
 * JNDIの設定はしない
 
-## DBサーバ
+### DBサーバ
 
 * プライベートIPアドレス: `192.168.33.11`
 * DBサーバはOracle 11g XE
+  * `sudo su oracle` でsqlplusが使えるユーザーになる
+  * `sqlplus / as sysdba ` で繋がる
 * OpenJDK8
 * Maven
 * JMeter
+
+### AWSでやるとき
+
+1. ansibleのインストールのため `install_ansible.sh` を実行する。
+2. それぞれのサーバーで `$ ansible-playbook -i localhost, -c local perform_[ap|db].yml` を実行すれば動くとおもう
 
 ---
 
@@ -68,6 +75,5 @@ Vagrantfileを置いているパスに日本語が含まれているはずなの
 
 ## 参考
 
-### ansible
-
-* https://docs.ansible.com/ansible/latest/modules/modules_by_category.html
+* [ansible](https://docs.ansible.com/ansible/latest/modules/modules_by_category.html)
+* [oracle install](http://blog.azumakuniyuki.org/2013/05/install-oracle-11g-xe-into-centos-6.html)

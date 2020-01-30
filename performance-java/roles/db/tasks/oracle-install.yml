@@ -1,0 +1,12 @@
+---
+  - name: copy rpm
+    copy: src=rpm/oracle-xe-11.2.0-1.0.x86_64.rpm dest=/tmp/oracle-xe-11.2.0-1.0.x86_64.rpm owner=root group=root mode=0755
+
+  - name: Install
+    yum:
+      name:
+        - "java-1.8.0-openjdk"
+        - "maven"
+        - "git"
+        - "/tmp/oracle-xe-11.2.0-1.0.x86_64.rpm"
+      state: present

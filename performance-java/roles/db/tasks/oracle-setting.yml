@@ -1,0 +1,26 @@
+---
+  - name: add group dba
+    group: name=dba system=yes state=present
+
+  - file: path=/u01/app state=directory
+
+  - name: add user oracle
+    user: name=oracle system=yes group=dba home=/u01/app/oracle shell=/bin/bash state=present
+
+  - file: path=/u01/app/oracle owner=oracle group=dba recurse=yes state=directory
+
+  - stat: path=/u01/app/oracle/.bash_profile
+    register: bash_profile
+
+  - file: path=/u01/app/oracle/.bash_profile owner=oracle group=dba state=touch
+    when: (not bash_profile.stat.exists)
+  - lineinfile: dest=/u01/app/oracle/.bash_profile line="export ORACLE_HOME=/u01/app/oracle/product/11.2.0/xe" state=present
+  - lineinfile: dest=/u01/app/oracle/.bash_profile line="export ORACLE_SID=XE" state=present
+  - lineinfile: dest=/u01/app/oracle/.bash_profile line="export ORACLE_BASE=/u01/app/oracle" state=present
+  - lineinfile: dest=/u01/app/oracle/.bash_profile line="export PATH=$ORACLE_HOME/bin:$PATH" state=present
+
+  - stat: path=/u01/app/oracle/.bashrc
+    register: bashrc
+  - file: path=/u01/app/oracle/.bashrc owner=oracle group=dba state=touch
+    when: (not bashrc.stat.exists)
+  - lineinfile: dest=/u01/app/oracle/.bashrc line="source ~/.bash_profile" state=present

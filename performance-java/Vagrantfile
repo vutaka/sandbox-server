@@ -51,7 +51,7 @@ Vagrant.configure("2") do |config|
     perform_db.vm.provision "shell", path: "install_ansible.sh"
     # シェル書くのが辛いので大部分のプロビジョンはansibleローカル
     perform_db.vm.provision "ansible_local" do |ansible|
-      ansible.playbook = "db/playbook.yml"
+      ansible.playbook = "perform_db.yml"
     end
 
   end

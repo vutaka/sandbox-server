@@ -1,0 +1,6 @@
+---
+- name: perform_db
+  become: true
+  hosts: all
+  roles:
+    - db
