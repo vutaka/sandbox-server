@@ -1,0 +1,59 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+  config.vm.box = "bento/amazonlinux-2"
+
+  # perform_apサーバ
+  config.vm.define :perform_ap do | perform_ap |
+    perform_ap.vm.hostname = "perform-ap"
+    perform_ap.vm.network :private_network, ip: "192.168.33.10", virtualbox__intnet: "intnet"
+
+    # ポートフォワーディングの設定
+    perform_ap.vm.network "forwarded_port", guest: 8080, host: 38080
+
+    # プロキシ設定
+    if Vagrant.has_plugin?("vagrant-proxyconf") && ENV['http_proxy']
+      puts '- Proxy Setting ----------------------------------'
+      puts ENV['http_proxy']
+      perform_ap.proxy.http     = ENV['http_proxy']
+      perform_ap.proxy.https    = ENV['http_proxy']
+      perform_ap.proxy.no_proxy = "localhost,127.0.0.1"
+      puts '--------------------------------------------------'
+    end
+    
+    # シェル書くのが辛いのでプロビジョンはansibleローカル
+    # perform_ap.vm.provision "ansible_local" do |ansible|
+    #   ansible.playbook = "perform_ap/perform_ap_server.yml"
+    # end
+
+  end
+
+  # dbサーバ
+  config.vm.define :perform_db do | perform_db |
+    perform_db.vm.hostname = "perform-db"
+    perform_db.vm.network :private_network, ip: "192.168.33.11", virtualbox__intnet: "intnet"
+
+    # ポートフォワーディングの設定
+    perform_db.vm.network "forwarded_port", guest: 1521, host: 41521
+
+    # プロキシ設定
+    if Vagrant.has_plugin?("vagrant-proxyconf") && ENV['http_proxy']
+      puts '- Proxy Setting ----------------------------------'
+      puts ENV['http_proxy']
+      perform_db.proxy.http     = ENV['http_proxy']
+      perform_db.proxy.https    = ENV['http_proxy']
+      perform_db.proxy.no_proxy = "localhost,127.0.0.1"
+      puts '--------------------------------------------------'
+    end
+    # amazon linuxにansible入れるのはこれをやらねばならない
+    perform_db.vm.provision "shell", path: "install_ansible.sh"
+    # シェル書くのが辛いので大部分のプロビジョンはansibleローカル
+    perform_db.vm.provision "ansible_local" do |ansible|
+      ansible.playbook = "db/playbook.yml"
+    end
+
+  end
+
+end
