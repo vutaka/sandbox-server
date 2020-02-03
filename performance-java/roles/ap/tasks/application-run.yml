@@ -1,0 +1,16 @@
+---
+
+  - name: Deploy war
+    copy:
+      src: "{{item}}"
+      dest: /usr/share/tomcat/webapps/example.war
+      mode: 0644
+    with_fileglob:
+      - "war/*.war"
+
+  - name: Start & Enable tomcat
+    systemd:
+      name: tomcat
+      daemon-reload: true
+      state: started
+      enabled: true

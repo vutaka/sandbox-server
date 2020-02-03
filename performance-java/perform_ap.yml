@@ -1,0 +1,6 @@
+---
+- name: perform_ap
+  become: true
+  hosts: all
+  roles:
+    - ap

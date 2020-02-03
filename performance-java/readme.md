@@ -6,9 +6,15 @@ Tomcatにデプロイしたアプリの性能をみてみる場所
 
 * [ここ](https://www.oracle.com/technetwork/jp/database/database-technologies/express-edition/overview/index.html)からOracle XE 11g のRPMを入手してください。(zipファイルなので解凍してください)
   * 「ダウンロード」タブ -> 画面下部「以前のリリース」
-  * `roles/db/files/rpm/oracle-xe-11.2.0-1.0.x86_64.rpm` となるように配置してください。
 * [ここ](https://repo.boundlessgeo.com/main/com/oracle/jdbc/ojdbc6/11.1.0.6.0/ojdbc6-11.1.0.6.0.jar)からJDBCドライバを入手してください。
+* デプロイしたいwarファイルを作成してください。
+  * ただしJNDIの設定は行っていないのでアプリ側で設定する必要があります。
 
+| ファイル                                       | 配置場所                                             | 配置対象サーバ |
+| ---------------------------------------------- | ---------------------------------------------------- | -------------- |
+| Oracle XE 11g rpm                              | `roles/db/files/rpm/oracle-xe-11.2.0-1.0.x86_64.rpm` | DB             |
+| Oracle JDBCドライバ（そのほかのjarファイルも） | `roles/ap/files/lib/*.jar`                           | AP             |
+| デプロイしたいwarファイル                      | `roles/ap/files/war/*.war`                           | AP             |
 ## 環境構成
 
 APサーバ(tomcat)とDBサーバ(Oracle 11g + JMeter)の２台
@@ -23,26 +29,26 @@ APサーバ(tomcat)とDBサーバ(Oracle 11g + JMeter)の２台
 * Vagrant 2.2.4(1.9以降なら多分動く)
 * bento/amazonlinux-2
 
-|役割|host名|IPアドレス|確認用ポートフォワーディングの設定|
-|-|-|-|-|
-|APサーバ|perform-ap|192.168.33.10|ローカルマシン:38080 -> VM:8080|
-|DBサーバ|perform-db|192.168.33.11|ローカルマシン:41521 -> VM:1521|
+| 役割     | host名     | IPアドレス    | 確認用ポートフォワーディングの設定 |
+| -------- | ---------- | ------------- | ---------------------------------- |
+| APサーバ | perform-ap | 192.168.33.10 | ローカルマシン:38080 -> VM:8080    |
+| DBサーバ | perform-db | 192.168.33.11 | ローカルマシン:41521 -> VM:1521    |
 
 ### APサーバ
 
-* プライベートIPアドレス: `192.168.33.10`
 * JavaはJava8
+* tomcat
 * JNDIの設定はしない
 
 ### DBサーバ
 
-* プライベートIPアドレス: `192.168.33.11`
 * DBサーバはOracle 11g XE
-  * `sudo su oracle` でsqlplusが使えるユーザーになる
-  * `sqlplus / as sysdba ` で繋がる
+  * `$ sudo su oracle` でsqlplusが使えるユーザーになる
+  * `$ sqlplus / as sysdba ` で繋がる
+  * `conn system` でパスワードに `systempass` を入力してログインできる
 * OpenJDK8
 * Maven
-* JMeter
+* JMeter（未）
 
 ### AWSでやるとき
 

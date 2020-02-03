@@ -1,0 +1,29 @@
+---
+
+  - name: Regist clean target
+    find:
+      paths: /usr/share/tomcat/webapps
+      file_type: any
+      depth: 1
+    register: somethins_to_delete
+
+  - name: Clean example
+    file:
+      path: "{{ item.path }}"
+      state: absent
+    with_items: "{{ somethins_to_delete.files }}"
+
+  - name: Make app dir
+    file:
+      path: /work/{{ item.name }}
+      state: directory
+      owner: tomcat
+      group: tomcat
+      mode: 0755
+    with_items:
+      - { name: 'output' }
+      - { name: 'tmp' }
+      - { name: 'registration/input' }
+      - { name: 'registration/tmp' }
+      - { name: 'registration/test' }
+
