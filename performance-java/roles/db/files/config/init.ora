@@ -53,3 +53,8 @@ shared_servers=4
 ###########################################
 undo_management=AUTO
 undo_tablespace=UNDOTBS1
+
+###########################################
+# OTHERS
+###########################################
+ NLS_LENGTH_SEMANTICS = 'CHAR'
