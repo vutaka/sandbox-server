@@ -1,0 +1,5 @@
+---
+  - include: tomcat-install.yml
+  - include: tomcat-init.yml
+  - include: tomcat-setting.yml
+  - include: application-run.yml

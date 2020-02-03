@@ -1,0 +1,14 @@
+---
+
+  - name: Deploy war
+    copy:
+      src: war/example.war
+      dest: /usr/share/tomcat/webapps/
+      mode: 0644
+
+  - name: Start & Enable tomcat
+    systemd:
+      name: tomcat
+      daemon-reload: true
+      state: started
+      enabled: true

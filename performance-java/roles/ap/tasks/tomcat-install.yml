@@ -1,0 +1,14 @@
+---
+  - name: Set locale
+    shell: localectl set-locale LANG=ja_JP.UTF-8
+
+  - name: Set timezone
+    shell: timedatectl set-timezone Asia/Tokyo
+
+  - name: Install yum
+    yum:
+      name:
+        - java-1.8.0-openjdk
+        - tomcat
+        - tomcat-webapps
+        - tomcat-admin-webapps
