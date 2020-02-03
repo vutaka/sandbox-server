@@ -2,9 +2,11 @@
 
   - name: Deploy war
     copy:
-      src: war/example.war
-      dest: /usr/share/tomcat/webapps/
+      src: "{{item}}"
+      dest: /usr/share/tomcat/webapps/example.war
       mode: 0644
+    with_fileglob:
+      - "war/*.war"
 
   - name: Start & Enable tomcat
     systemd:

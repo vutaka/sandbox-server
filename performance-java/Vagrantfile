@@ -22,11 +22,12 @@ Vagrant.configure("2") do |config|
       perform_ap.proxy.no_proxy = "localhost,127.0.0.1"
       puts '--------------------------------------------------'
     end
-    
+    # amazon linuxにansible入れるのはこれをやらねばならない
+    perform_ap.vm.provision "shell", path: "install_ansible.sh"
     # シェル書くのが辛いのでプロビジョンはansibleローカル
-    # perform_ap.vm.provision "ansible_local" do |ansible|
-    #   ansible.playbook = "perform_ap/perform_ap_server.yml"
-    # end
+    perform_ap.vm.provision "ansible_local" do |ansible|
+      ansible.playbook = "perform_ap.yml"
+    end
 
   end
 

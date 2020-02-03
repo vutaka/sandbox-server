@@ -1,17 +1,20 @@
 ---
+- name: Copy lib
+  copy:
+    src: "{{item}}"
+    dest: /usr/share/tomcat/lib/
+    owner: tomcat
+    group: tomcat
+    mode: 0644
+  with_fileglob:
+    - "lib/*.jar"
 
-  - name: Copy lib
-    copy:
-      src: lib/*.jar
-      dest: /usr/share/tomcat/lib/
-      owner: tomcat
-      group: tomcat
-      mode: 0644
-
-  - name: Copy tomcat langconf
-    copy:
-      src: /vagrant/ap/resources/lang.conf
-      dest: /usr/share/tomcat/conf/conf.d/
-      owner: tomcat
-      group: tomcat
-      mode: 0774
+- name: Copy tomcat langconf
+  copy:
+    src: "{{item}}"
+    dest: /usr/share/tomcat/conf/conf.d/
+    owner: tomcat
+    group: tomcat
+    mode: 0774
+  with_fileglob:
+    - "conf.d/*.conf"
