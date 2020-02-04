@@ -14,3 +14,11 @@
       daemon-reload: true
       state: started
       enabled: true
+
+  - name: copy monitoring shell
+    copy:
+      src: "{{item}}"
+      dest: /work/shell
+      mode: 0744
+    with_fileglob:
+      - "shell/*.sh"

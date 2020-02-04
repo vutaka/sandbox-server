@@ -83,3 +83,16 @@ Vagrantfileを置いているパスに日本語が含まれているはずなの
 
 * [ansible](https://docs.ansible.com/ansible/latest/modules/modules_by_category.html)
 * [oracle install](http://blog.azumakuniyuki.org/2013/05/install-oracle-11g-xe-into-centos-6.html)
+
+
+## メモ
+
+JAVA_HOMEを引っ張り出す
+
+```
+JAVA_PATH=`readlink -f $(which java)`
+JAVA_HOME=`echo $JAVA_PATH | grep -oP "^.+(?=/jre/bin/java)"`
+PIDを特定する
+TOMCAT_PID=`ps -ef | grep tomcat | grep -v grep | awk '{ print $2 }'`
+
+```

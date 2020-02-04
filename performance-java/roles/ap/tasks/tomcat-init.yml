@@ -13,7 +13,7 @@
       state: absent
     with_items: "{{ somethins_to_delete.files }}"
 
-  - name: Make app dir
+  - name: Make app work dir
     file:
       path: /work/{{ item.name }}
       state: directory
@@ -26,4 +26,17 @@
       - { name: 'registration/input' }
       - { name: 'registration/tmp' }
       - { name: 'registration/test' }
+      - { name: 'shell' }
+
+  - name: Make log dir
+    file:
+      path: /var/log/app/{{ item.name }}
+      state: directory
+      owner: tomcat
+      group: tomcat
+      mode: 0755
+    with_items:
+      - { name: 'gc' }
+      - { name: 'heap' }
+      - { name: 'system' }
 
