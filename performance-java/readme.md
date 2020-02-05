@@ -92,7 +92,7 @@ JAVA_HOMEを引っ張り出す
 ```
 JAVA_PATH=`readlink -f $(which java)`
 JAVA_HOME=`echo $JAVA_PATH | grep -oP "^.+(?=/jre/bin/java)"`
-PIDを特定する
+# PIDを特定する
 TOMCAT_PID=`ps -ef | grep tomcat | grep -v grep | awk '{ print $2 }'`
-
+echo `date '+%Y-%m-%d %H:%M:%S'` `$JAVA_HOME/bin/jstat -gc $TOMCAT_PID` >> gc.log
 ```
