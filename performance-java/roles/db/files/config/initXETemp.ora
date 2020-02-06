@@ -33,7 +33,7 @@ diagnostic_dest=/u01/app/oracle
 ###########################################
 # Sessions
 ###########################################
-sessions=20
+sessions=1824
  
 ###########################################
 # Security and Auditing
@@ -52,3 +52,9 @@ dispatchers="(PROTOCOL=TCP) (SERVICE=XEXDB)"
 undo_management=AUTO
 undo_tablespace=UNDOTBS1
 _no_recovery_through_resetlogs=true
+
+###########################################
+# OTHERS
+###########################################
+ NLS_LENGTH_SEMANTICS = 'CHAR'
+ SHARED_POOL_SIZE  = 512M

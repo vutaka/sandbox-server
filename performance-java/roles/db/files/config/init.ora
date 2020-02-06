@@ -34,7 +34,7 @@ diagnostic_dest=/u01/app/oracle
 ###########################################
 # Sessions
 ###########################################
-sessions=20
+sessions=1824
  
 ###########################################
 # Security and Auditing
@@ -58,3 +58,4 @@ undo_tablespace=UNDOTBS1
 # OTHERS
 ###########################################
  NLS_LENGTH_SEMANTICS = 'CHAR'
+ SHARED_POOL_SIZE  = 512M
