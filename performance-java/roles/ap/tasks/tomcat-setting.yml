@@ -27,4 +27,4 @@
     group: tomcat
     mode: 0644
   with_fileglob:
-    - "conf/*.xml"
+    - "server/*.xml"
