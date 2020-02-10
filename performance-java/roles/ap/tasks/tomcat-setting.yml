@@ -9,7 +9,7 @@
   with_fileglob:
     - "lib/*.jar"
 
-- name: Copy tomcat langconf
+- name: Copy tomcat conf.d
   copy:
     src: "{{item}}"
     dest: /usr/share/tomcat/conf/conf.d/
@@ -18,3 +18,13 @@
     mode: 0774
   with_fileglob:
     - "conf.d/*.conf"
+
+- name: Copy tomcat conf
+  copy:
+    src: "{{item}}"
+    dest: /usr/share/tomcat/conf/
+    owner: tomcat
+    group: tomcat
+    mode: 0644
+  with_fileglob:
+    - "conf/*.xml"

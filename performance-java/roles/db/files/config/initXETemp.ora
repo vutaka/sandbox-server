@@ -58,3 +58,4 @@ _no_recovery_through_resetlogs=true
 ###########################################
  NLS_LENGTH_SEMANTICS = 'CHAR'
  SHARED_POOL_SIZE  = 512M
+ PROCESSES = 912

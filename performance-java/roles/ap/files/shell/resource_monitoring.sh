@@ -1,4 +1,5 @@
-
+sudo systemctl start tomcat
+sleep 10
 LOG_DIR="/var/log/app/system"
 JAVA_PATH=`readlink -f $(which java)`
 JAVA_HOME=`echo $JAVA_PATH | grep -oP "^.+(?=/jre/bin/java)"`
@@ -12,5 +13,5 @@ while true; do
   ps axo "user,pid,vsz,rss,command"|grep tomcat >> $LOG_DIR/ps.log
   vmstat >> $LOG_DIR/vmstat.log
   echo `date '+%Y-%m-%d %H:%M:%S'` `$JAVA_HOME/bin/jstat -gc $TOMCAT_PID` >> $LOG_DIR/gc.log
-  sleep 5;
+  sleep 1;
 done
