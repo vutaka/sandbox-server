@@ -15,6 +15,34 @@ Tomcatにデプロイしたアプリの性能をみてみる場所
 | Oracle XE 11g rpm                              | `roles/db/files/rpm/oracle-xe-11.2.0-1.0.x86_64.rpm` | DB             |
 | Oracle JDBCドライバ（そのほかのjarファイルも） | `roles/ap/files/lib/*.jar`                           | AP             |
 | デプロイしたいwarファイル                      | `roles/ap/files/war/*.war`                           | AP             |
+
+## ここの構成について
+
+perform_[ap|db].ymlを使ってそれぞれのapサーバ、dbサーバの構築を行います。
+
+これら単体の動かし方は後述します。
+
+Vagrantfileはローカルでの構築にVagrantを使った時の内容が書いてます。 `vagrant up` すればよいです。
+
+```
+# apサーバ、dbサーバの環境構築に必要なファイルをそれぞれディレクトリに分けておいています
+roles
+    ├─ap
+    │  ├─files        # tasksにおいてあるymlからアクセスします。基本的にサーバにコピーします。
+    │  │  ├─conf.d   # tomcatの設定ファイルの置き場です。/usr/share/tomcat/conf/conf.d/に行きます。
+    │  │  ├─lib      # tomcatに配備するライブラリの置き場です。jarを置いてください。/usr/share/tomcat/lib/に行きます。
+    │  │  ├─server   # tomcatの設定ファイル(xml)の置き場です。/usr/share/tomcat/conf/に行きます。
+    │  │  ├─shell    # APサーバで使うshellの置き場です。/work/shellに行きます。
+    │  │  └─war      # warの置き場です。どんな名前だろうとexample.warにして配備します。一個だけおいてください。
+    │  └─tasks        # mainからそれぞれのymlを実行します。
+    └─db
+        ├─files        # tasksにおいてあるymlからアクセスします。基本的にＤＢの初期構築にしか使いません。
+        │  ├─config   # 初期構築でのoracleの設定です。セッション数などを設定してます。
+        │  ├─init     # インストール時の設定です。管理者ユーザのパスワードなどを記載しています。
+        │  └─rpm      # oracleのインストールで使うrpmの置き場です。
+        └─tasks        # mainからそれぞれのymlを実行します。
+```
+
 ## 環境構成
 
 APサーバ(tomcat)とDBサーバ(Oracle 11g + JMeter)の２台
