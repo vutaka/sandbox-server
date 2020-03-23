@@ -36,7 +36,6 @@
       group: tomcat
       mode: 0755
     with_items:
-      - { name: 'gc' }
-      - { name: 'heap' }
+      - { name: 'app' }
       - { name: 'system' }
 
